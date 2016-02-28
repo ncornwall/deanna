@@ -31,7 +31,7 @@ def hello_world():
             'client_id': SLACK_CLIENT_ID,
             'client_secret': SLACK_CLIENT_SECRET,
             'code': flask.request.args['code'],
-            'redirect_uri': "http://127.0.0.1:5000",
+            'redirect_uri': "http://intense-hamlet-80471.herokuapp.com",
         })
         print response.json()
         if response.ok:
@@ -39,41 +39,9 @@ def hello_world():
             if content.has_key('bot'):
                 bot = content['bot']
                 if bot.has_key('bot_access_token'):
-                    # slackbot = Slackbot(bot['bot_access_token'])
-                    def handle_sub_view(data):
-                        slackbot = Slackbot(data)
-                    data = bot['bot_access_token']
-                    thread.start_new_thread(handle_sub_view, data)
+                    slackbot = Slackbot(bot['bot_access_token'])
                     return render_template('success.html')
-                    # slackbot = Slackbot(bot['bot_access_token'])
-                    # return render_template('hello.html')
     return render_template('hello.html')
-
-# @app.route('/auth')
-# def main_view():
-#     if 'error' in flask.request.args:
-#         return 'Access was denied', 403, {'Content-type': 'text/plain'}
-#     if 'code' in flask.request.args:
-#         response = requests.get(
-#             SLACK_OAUTH_URL,
-#             params={
-#                 'client_id': SLACK_CLIENT_ID,
-#                 'client_secret': SLACK_CLIENT_SECRET,
-#                 'code': flask.request.args['code'],
-#                 'redirect_uri': flask.url_for('.main_view', _external=True),
-#             })
-#         return (json.dumps(response.json()), 200,
-#                 {'Content-type': 'application/json'})
-#     redirect_url = '{}?{}'.format(
-#         SLACK_AUTHORIZE_URL,
-#         urlencode({
-#             'client_id': SLACK_CLIENT_ID,
-#             'redirect_uri': flask.url_for('.main_view', _external=True),
-#             'scope': 'identify,read,post,client',
-#             'state': str(uuid.uuid4()),
-#             # 'team': None,
-#         }))
-#     return flask.redirect(redirect_url)
 
 if __name__ == '__main__':
     app.run()

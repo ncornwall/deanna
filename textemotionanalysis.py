@@ -10,6 +10,7 @@ Created on Sat Feb 27 16:22:31 2016
 import requests
 import json
 import operator
+import ast
 
 
 class TextEmotionAnalyzer:
@@ -40,7 +41,20 @@ class TextEmotionAnalyzer:
                    '?' + "outputMode=json&apikey=" + self.params['apikey']
 
         results = self.s.post(url=post_url, data=post_data)
-        return results.text
+        #return results.text                    # returns string
+        return ast.literal_eval(results.text)   # returns dict
+
+
+    def check_results(self, results):
+        """
+        Checks if response returned an error status
+        """
+
+        results = results
+        status = results['status']
+        if status is "OK":
+            print "yay!"
+        
 
     def get_emotions(self, text=""):
         """
@@ -57,7 +71,8 @@ class TextEmotionAnalyzer:
                    '?' + "outputMode=json&apikey=" + self.params['apikey']
 
         results = self.s.post(url=post_url, data=post_data)
-        return results.text
+        #return results.text                    # returns string
+        return ast.literal_eval(results.text)   # returns dict
 
     def get_top_emotion(self):
         """
@@ -65,8 +80,7 @@ class TextEmotionAnalyzer:
 
         e.g. {"joy": "0.515193"}
         """
-        res = json.loads(self.get_emotions(text="poopies!"))['docEmotions']
-
+        # res = json.loads(self.get_emotions(text="poopies!"))['docEmotions']
+        res = self.get_emotions(text="poopies!")['docEmotions']
         abc = max(res.iteritems(), key=operator.itemgetter(1))
-
         return json.dumps({abc[0]: abc[1]})
