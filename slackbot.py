@@ -4,6 +4,8 @@ from slackclient import SlackClient
 import requests
 
 class Slackbot:
+    
+    
 
 	def __init__(self, token):
 		self.s = requests.Session()
@@ -12,12 +14,15 @@ class Slackbot:
 		sc = SlackClient(token)
 		if sc.rtm_connect():
 		    while True:
-		        obj = sc.rtm_read()
-		        if len(obj) != 0:
-				    if obj[0].has_key('text'):
-				    	print obj[0]['text']
-				    	self.analyse(obj[0]['text'])
-		        time.sleep(1)
+		        new_evts = sc.rtm_read()
+		        for evt in new_evts:
+		            if len(evt) !=0:
+		                if evt.has_key('text') and not evt.has_key('subtype'):
+		                #if evt.has_key('text'):
+		                    print evt['text']
+		                    self.analyse(evt['text'])
+		                    print sc.api_call('chat.postMessage', channel="#al_c", text='Hello World!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
+		            time.sleep(1)
 		else:
 		    print "Connection Failed, invalid token?"
 
