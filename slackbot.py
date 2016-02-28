@@ -30,13 +30,31 @@ def analyse(textToAnalyze):
 
 token = "xoxp-3927713261-3938135231-23401969635-ab0e5635c7"# found at https://api.slack.com/web#authentication
 sc = SlackClient(token)
-if sc.rtm_connect():
+##if sc.rtm_connect():
+##    while True:
+##        obj = sc.rtm_read()
+##        if len(obj) != 0:
+##		    if obj[0].has_key('text'):
+##		    	print obj[0]['text']
+##		    	analyse(obj[0]['text'])
+##        time.sleep(1)
+##else:
+##    print "Connection Failed, invalid token?"
+
+token2 = "xoxp-3927713261-4234411675-23415124327-eb87f5a223"# found at https://api.slack.com/web#authentication
+sc2 = SlackClient(token2)
+if sc2.rtm_connect() and sc.rtm_connect():
     while True:
-        obj = sc.rtm_read()
-        if len(obj) != 0:
-		    if obj[0].has_key('text'):
-		    	print obj[0]['text']
-		    	analyse(obj[0]['text'])
+        obj1 = sc.rtm_read()
+        obj2 = sc2.rtm_read()
+        if len(obj1) != 0:
+		    if obj1[0].has_key('text'):
+		    	print obj1[0]['text']
+		    	analyse(obj1[0]['text'])
+	if len(obj2) != 0:
+                if obj2[0].has_key('text'):
+		    	print obj2[0]['text']
+		    	analyse(obj2[0]['text'])
         time.sleep(1)
 else:
     print "Connection Failed, invalid token?"
