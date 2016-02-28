@@ -10,11 +10,11 @@ class bot_history:
                          'sadness'  : []}
         self.sentiments = []
 
-    def addResponse(self, sentiment, emotion):
+    def addResponse(self, emotion):
         if (len(self.emotions['anger']) >= self.numMessagesToKeep):
             for s in self.emotions:
                 s.pop(0)
-            self.sentiments.pop(0)
+            # self.sentiments.pop(0)
 
         print emotion
         self.emotions['anger'].append(emotion['anger'])
@@ -22,15 +22,18 @@ class bot_history:
         self.emotions['fear'].append(emotion['fear'])
         self.emotions['joy'].append(emotion['joy'])
         self.emotions['sadness'].append(emotion['sadness'])
-        self.sentiments.append(sentiment)
+        # self.sentiments.append(sentiment)
 
     # prints the current averages of each emotion
     def getAllMeasures(self):
         average = {}
         for e in self.emotions:
-            eSum = sum(self.emotions[e])
-            average[e] = eSum*1.0 / len(e)*1.0
-        print average
+            eSum = 0
+            for i in self.emotions[e]:
+                eSum += float(i)
+            # eSum = sum(float(self.emotions[e]))
+            average[e] = eSum*1.0 / len(self.emotions[e])*1.0
+        # print average
         return average
 
     # prints the user's highest emotion

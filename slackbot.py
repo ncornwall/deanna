@@ -8,14 +8,19 @@ import time
 from slackclient import SlackClient
 import requests
 from textemotionanalysis import TextEmotionAnalyzer
+from bot_history import bot_history
 
 class Slackbot:
 
     def __init__(self, token):
+        history_length = 20
+        summary_frequency = 5
+        summary_countdown = summary_frequency
         self.s = requests.Session()
         self.tea = TextEmotionAnalyzer(outputMode="json")
         self.token = token
         sc = SlackClient(token)
+        self.history = bot_history(history_length)
         if sc.rtm_connect():
             while True:
                 new_evts = sc.rtm_read()
@@ -25,6 +30,10 @@ class Slackbot:
                             print evt['text']
                             self.analyse(evt['text'], evt['user'], evt['channel'])
                             print sc.api_call('chat.postMessage', channel="#al_c", text='Hello World!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
+                            if (summary_countdown >= 0):
+                                summary_countdown -= 1
+                            else:
+                                print_summary(self.history)
                     time.sleep(1)
         else:
             print "Connection Failed, invalid token?"
@@ -43,6 +52,7 @@ class Slackbot:
             }
 
             print result
+            self.history.addResponse(result['docEmotions'])
 
         except Exception as e:
             print "Could not get_emotions: " + e.message
@@ -52,3 +62,10 @@ if __name__ == "__main__":
     bot = Slackbot("xoxp-3927713261-3938135231-23401969635-ab0e5635c7")
     #bot = Slackbot("xoxp-23412134003-23409266740-23415010816-f684006023")
     #bot = Slackbot(token="xoxp-23412134003-23409266740-23444912631-4b1d6ed922")
+
+def print_summary(hist):
+    print hist.getAllMeasures()
+    print hist.getHighEmotion()
+
+
+
