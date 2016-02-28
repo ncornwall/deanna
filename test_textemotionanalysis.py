@@ -14,7 +14,7 @@ def test_tea():
     print tea.get_emotions(text="poopies!")
 
     print "get_top_emotion:"
-    print tea.get_top_emotion()
+    print tea.get_top_emotion("poopies")
 
 if __name__ == "__main__":
     test_tea()

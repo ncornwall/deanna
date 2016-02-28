@@ -30,7 +30,11 @@ class Slackbot:
                         if evt.has_key('text') and not evt.has_key('subtype'):
                             print evt['text']
                             top_emotion = self.analyse(evt['text'], evt['user'], evt['channel'])
+                            if top_emotion is None:
+                                print "top emotion is None"
+                                continue
                             print top_emotion["docEmotions"]
+
                             if top_emotion["docEmotions"].has_key('anger'):
                                 print sc.api_call('chat.postMessage', channel="#general", text='Calm down!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
                             elif top_emotion["docEmotions"].has_key('fear'):
@@ -54,16 +58,21 @@ class Slackbot:
         """
         Return TextEmotionAnalyzer docEmotions as dict for current text. Send res to user of id
         """
-        response = self.tea.get_top_emotion(textToAnalyze)
+        top_response = self.tea.get_top_emotion(textToAnalyze)
+        #all_response = self.tea.get_emotions(textToAnalyze)
         try:
             result = {
                 "channel": channelId,
                 "user": userId,
                 "text": textToAnalyze,
-                "docEmotions": ast.literal_eval(response)
+                "docEmotions": ast.literal_eval(top_response)
+                #"allEmotions": ast.literal_eval(all_response)
             }
-            print result
-            self.history.addResponse(result['docEmotions'])
+            #print result['allEmotions']
+            
+            #self.history.addResponse(result['allEmotions'])
+
+            return result
 
         except Exception as e:
 
