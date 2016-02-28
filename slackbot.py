@@ -1,58 +1,54 @@
-# NWHACKS 2016 AL_C slackbot
+"""
+NWHACKS 2016 AL_C slackbot
+
+To activate locally, just call `python .\slackbot.py`
+"""
+
 import time
 from slackclient import SlackClient
 import requests
+from textemotionanalysis import TextEmotionAnalyzer
 
 class Slackbot:
 
-    # run on initial bot launch to get list of users,create user objects
-    # currently doesn't urn
-    def enumerateUsers(self):
-        # channels = self.sc.server.channels
-        # print channels
-        username = self.sc.server.username
-        print username
-        # raw = self.sc.server
-        # print 'Server is: ' + str(raw)
-        # raw = self.sc.server.channels
-        # print 'Channels: ' + str(raw)
-
     def __init__(self, token):
         self.s = requests.Session()
-
+        self.tea = TextEmotionAnalyzer(outputMode="json")
         self.token = token
         sc = SlackClient(token)
-        self.sc = sc
-        historyLength = 20
-        self.history = bot_history(historyLength)
-        
         if sc.rtm_connect():
-            # self.users = self.enumerateUsers()
             while True:
                 obj = sc.rtm_read()
                 if len(obj) != 0:
                     if obj[0].has_key('text'):
-                        print obj[0]['text']
-                        self.analyse(obj[0]['text'])
+                        # print "channel: " + obj[0]['channel']
+                        # print "text: " + obj[0]['text']
+                        # print "user: " + obj[0]['user']
+                        self.analyse(obj[0]['text'], obj[0]['user'], obj[0]['channel'])
                 time.sleep(1)
         else:
             print "Connection Failed, invalid token?"
 
-    # from urllib.parse import urlencode
-    def analyse(self, textToAnalyze):
+    def analyse(self, textToAnalyze, userId, channelId):
+        """
+        Return TextEmotionAnalyzer docEmotions as dict for current text. Send res to user of id
+        """
+        response = self.tea.get_emotions(textToAnalyze)
+        try:
+            result = {
+                "channel": channelId,
+                "user": userId,
+                "text": textToAnalyze,
+                "docEmotions": response["docEmotions"]
+            }
 
-        apikey = "d39ed152b9ca4e2b4eb9828c0379a44f33ef0f65"
-        params = {}
+            print result
 
-        params['apikey'] = apikey
-        params['outputMode'] = 'json'
+        except Exception as e:
+            print "Could not get_emotions: " + e.message
 
-        post_data = {}
-        post_data['text'] = textToAnalyze
 
-        post_url = "http://access.alchemyapi.com/calls/text/TextGetEmotion?outputMode=json&apikey=d39ed152b9ca4e2b4eb9828c0379a44f33ef0f65"
-
-        results = self.s.post(url=post_url, data=post_data)
-
-        print("Result" + results.text)
-
+if __name__ == "__main__":
+    #bot = Slackbot("xoxp-3927713261-3938135231-23401969635-ab0e5635c7")
+    #bot = Slackbot("xoxp-23412134003-23409266740-23415010816-f684006023")
+    bot = Slackbot(token="xoxp-23412134003-23409266740-23444912631-4b1d6ed922")
