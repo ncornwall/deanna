@@ -1,4 +1,7 @@
 class user:
+
+	# class variables; !!! may be better as instance variables
+
 	numMessagesToKeep = 20
 	userName = ''
 
@@ -37,7 +40,7 @@ class user:
 	def getHighEmotion(self):
 		highScore = 0
 		highEmotion = ''
-		emotes = getAllMeasures()
+		emotes = user.getAllMeasures()
 		for e in emotes:
 			if emotes[e] > highScore:
 				highScore = emotes[e]
