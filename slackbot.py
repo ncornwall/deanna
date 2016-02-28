@@ -22,6 +22,7 @@ class Slackbot:
         self.token = token
         sc = SlackClient(token)
         self.history = bot_history(history_length)
+        channel = "#dancewithdeanna"
         if sc.rtm_connect():
             while True:
                 new_evts = sc.rtm_read()
@@ -36,15 +37,15 @@ class Slackbot:
                             print top_emotion["docEmotions"]
 
                             if top_emotion["docEmotions"].has_key('anger'):
-                                print sc.api_call('chat.postMessage', channel="#general", text='Calm down!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
+                                print sc.api_call('chat.postMessage', channel=channel, text='Calm down!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
                             elif top_emotion["docEmotions"].has_key('fear'):
-                                print sc.api_call('chat.postMessage', channel="#general", text='Dont worry!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
+                                print sc.api_call('chat.postMessage', channel=channel, text='Dont worry!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
                             elif top_emotion["docEmotions"].has_key('joy'):
-                                print sc.api_call('chat.postMessage', channel="#general", text='Yay!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
+                                print sc.api_call('chat.postMessage', channel=channel, text='Yay!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
                             elif top_emotion["docEmotions"].has_key('sadness'):
-                                print sc.api_call('chat.postMessage', channel="#general", text='*hugs*!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
+                                print sc.api_call('chat.postMessage', channel=channel, text='*hugs*!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
                             elif top_emotion["docEmotions"].has_key('disgust'):
-                                print sc.api_call('chat.postMessage', channel="#general", text='Gross!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
+                                print sc.api_call('chat.postMessage', channel=channel, text='Gross!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
 
                             if (summary_countdown >= 0):
                                 summary_countdown -= 1
@@ -80,7 +81,7 @@ class Slackbot:
 
 
 if __name__ == "__main__":
-    bot = Slackbot("xoxp-3927713261-3938135231-23401969635-ab0e5635c7")
+    bot = Slackbot("xoxp-21356914545-22690026608-23453753840-f6548d151f")
     #bot = Slackbot("xoxp-23412134003-23409266740-23415010816-f684006023")
     #bot = Slackbot(token="xoxp-23412134003-23409266740-23444912631-4b1d6ed922")
 
