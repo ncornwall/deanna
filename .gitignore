@@ -1,0 +1,6 @@
+# Python compiles
+*.pyc
+*.pyo
+
+# IDE stuff
+.idea
