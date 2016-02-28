@@ -42,6 +42,17 @@ class TextEmotionAnalyzer:
         results = self.s.post(url=post_url, data=post_data)
         return results.text
 
+    def check_results(self, results):
+        """
+        Checks if response returned an error status
+        """
+
+        results = json.loads(results)
+        status = results['status']
+        if status is "OK":
+            print "yay!"
+        
+
     def get_emotions(self, text=""):
         """
         Returns values for the 5 emotions of provided text
