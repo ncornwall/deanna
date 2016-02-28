@@ -9,6 +9,7 @@ from slackclient import SlackClient
 import requests
 from textemotionanalysis import TextEmotionAnalyzer
 import ast
+from forismatic import Forismatic
 
 class Slackbot:
 
@@ -26,16 +27,23 @@ class Slackbot:
                             print evt['text']
                             top_emotion = self.analyse(evt['text'], evt['user'], evt['channel'])
                             print top_emotion["docEmotions"]
+
+                            self.f = Forismatic()
+                            self.q = self.f.get_quote()
+                            quotey = '%s\t%s' % (self.q.quote, self.q.author)
+                            text = "Dont worry! " + quotey
+
+                            
                             if top_emotion["docEmotions"].has_key('anger'):
                                 print sc.api_call('chat.postMessage', channel="#al_c", text='Calm down!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
                             elif top_emotion["docEmotions"].has_key('fear'):
-                                print sc.api_call('chat.postMessage', channel="#al_c", text='Dont worry!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
+                                print sc.api_call('chat.postMessage', channel="#al_c", text=text, username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
                             elif top_emotion["docEmotions"].has_key('joy'):
                                 print sc.api_call('chat.postMessage', channel="#al_c", text='Yay!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
                             elif top_emotion["docEmotions"].has_key('sadness'):
                                 print sc.api_call('chat.postMessage', channel="#al_c", text='*hugs*!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
                             elif top_emotion["docEmotions"].has_key('disgust'):
-                                print sc.api_call('chat.postMessage', channel="#al_c", text='Gross!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
+                                print sc.api_call('chat.postMessage', channel="#al_c", text="Eew!", username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
                     time.sleep(1)
         else:
             print "Connection Failed, invalid token?"
