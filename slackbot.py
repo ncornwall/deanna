@@ -7,12 +7,13 @@ class Slackbot:
 
 	def __init__(self, token):
 		self.s = requests.Session()
-
 		self.token = token
-		sc = SlackClient(token)
+		sc = SlackClient(self.token)
+
 		if sc.rtm_connect():
 		    while True:
 		        obj = sc.rtm_read()
+		        print obj
 		        if len(obj) != 0:
 				    if obj[0].has_key('text'):
 				    	print obj[0]['text']
