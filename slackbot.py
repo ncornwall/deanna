@@ -43,8 +43,8 @@ class Slackbot:
             }
 
             print result
-
         except Exception as e:
+
             print "Could not get_emotions: " + e.message
 
 
