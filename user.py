@@ -1,16 +1,32 @@
+"""
+Class for Deanna users, mapped to Slack users
+"""
+
 class user:
 
-	# class variables; !!! may be better as instance variables
+	# class variables - if using these instead, comment out __init__()
 
-	numMessagesToKeep = 20
-	userName = ''
+	# numMessagesToKeep = 20
+	# userName = ''
+    #
+	# emotions = {'anger'	: [],
+	# 			  'disgust'	: [],
+	# 			  'fear'	: [],
+	# 			  'joy'		: [],
+	# 			  'sadness'	: []}
+	# sentiments = []
 
-	emotions = {'anger'	: [],
-				  'disgust'	: [],
-				  'fear'	: [],
-				  'joy'		: [],
-				  'sadness'	: []}
-	sentiments = []
+	# instantiation with instance variables
+	def __init__(self, numMessagesToKeep=20, userName=""):
+		self.numMessagesToKeep = numMessagesToKeep
+		self.userName = userName
+
+		self.emotions = {'anger'	: [],
+					     'disgust'	: [],
+					     'fear'	    : [],
+					     'joy'		: [],
+					     'sadness'	: []}
+		self.sentiments = []
 
 	# add a new entry to user's emotion tracking
 	def addResponse(self,sentiment, emotion):

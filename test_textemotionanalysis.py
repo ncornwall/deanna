@@ -16,3 +16,5 @@ def test_tea():
     print "get_top_emotion:"
     print tea.get_top_emotion()
 
+if __name__ == "__main__":
+    test_tea()
