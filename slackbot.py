@@ -18,14 +18,14 @@ class Slackbot:
         sc = SlackClient(token)
         if sc.rtm_connect():
             while True:
-                obj = sc.rtm_read()
-                if len(obj) != 0:
-                    if obj[0].has_key('text'):
-                        # print "channel: " + obj[0]['channel']
-                        # print "text: " + obj[0]['text']
-                        # print "user: " + obj[0]['user']
-                        self.analyse(obj[0]['text'], obj[0]['user'], obj[0]['channel'])
-                time.sleep(1)
+                new_evts = sc.rtm_read()
+                for evt in new_evts:
+                    if len(evt) !=0:
+                        if evt.has_key('text') and not evt.has_key('subtype'):
+                            print evt['text']
+                            self.analyse(evt['text'], evt['user'], evt['channel'])
+                            print sc.api_call('chat.postMessage', channel="#al_c", text='Hello World!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
+                    time.sleep(1)
         else:
             print "Connection Failed, invalid token?"
 
@@ -49,6 +49,6 @@ class Slackbot:
 
 
 if __name__ == "__main__":
-    #bot = Slackbot("xoxp-3927713261-3938135231-23401969635-ab0e5635c7")
+    bot = Slackbot("xoxp-3927713261-3938135231-23401969635-ab0e5635c7")
     #bot = Slackbot("xoxp-23412134003-23409266740-23415010816-f684006023")
-    bot = Slackbot(token="xoxp-23412134003-23409266740-23444912631-4b1d6ed922")
+    #bot = Slackbot(token="xoxp-23412134003-23409266740-23444912631-4b1d6ed922")
