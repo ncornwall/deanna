@@ -81,7 +81,7 @@ class Slackbot:
 
 
 if __name__ == "__main__":
-    bot = Slackbot("xoxp-21356914545-22690026608-23453753840-f6548d151f")
+    bot = Slackbot("xoxp-21356914545-22690026608-23455833233-8b493b4eae")
     #bot = Slackbot("xoxp-23412134003-23409266740-23415010816-f684006023")
     #bot = Slackbot(token="xoxp-23412134003-23409266740-23444912631-4b1d6ed922")
 

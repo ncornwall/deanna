@@ -24,7 +24,7 @@ app = flask.Flask(__name__)
 @app.route('/')
 def hello_world():
     print "slackbot:"
-    bot = Slackbot("xoxp-21356914545-22690026608-23453753840-f6548d151f")
+    bot = Slackbot("xoxp-21356914545-22690026608-23455833233-8b493b4eae")
 
     # if 'code' in request.args:
     #     print request.args.get('code', '')
