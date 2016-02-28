@@ -74,13 +74,14 @@ class TextEmotionAnalyzer:
         #return results.text                    # returns string
         return ast.literal_eval(results.text)   # returns dict
 
-    def get_top_emotion(self):
+    def get_top_emotion(self, text=""):
         """
         Returns top emotion and its value,
 
         e.g. {"joy": "0.515193"}
         """
         # res = json.loads(self.get_emotions(text="poopies!"))['docEmotions']
-        res = self.get_emotions(text="poopies!")['docEmotions']
+        res = self.get_emotions(text)['docEmotions']
         abc = max(res.iteritems(), key=operator.itemgetter(1))
         return json.dumps({abc[0]: abc[1]})
+        #return ast.literal_eval(abc)

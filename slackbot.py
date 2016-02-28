@@ -9,6 +9,7 @@ from slackclient import SlackClient
 import requests
 from textemotionanalysis import TextEmotionAnalyzer
 from bot_history import bot_history
+import ast
 
 class Slackbot:
 
@@ -28,8 +29,19 @@ class Slackbot:
                     if len(evt) !=0:
                         if evt.has_key('text') and not evt.has_key('subtype'):
                             print evt['text']
-                            self.analyse(evt['text'], evt['user'], evt['channel'])
-                            print sc.api_call('chat.postMessage', channel="#al_c", text='Hello World!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
+                            top_emotion = self.analyse(evt['text'], evt['user'], evt['channel'])
+                            print top_emotion["docEmotions"]
+                            if top_emotion["docEmotions"].has_key('anger'):
+                                print sc.api_call('chat.postMessage', channel="#al_c", text='Calm down!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
+                            elif top_emotion["docEmotions"].has_key('fear'):
+                                print sc.api_call('chat.postMessage', channel="#al_c", text='Dont worry!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
+                            elif top_emotion["docEmotions"].has_key('joy'):
+                                print sc.api_call('chat.postMessage', channel="#al_c", text='Yay!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
+                            elif top_emotion["docEmotions"].has_key('sadness'):
+                                print sc.api_call('chat.postMessage', channel="#al_c", text='*hugs*!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
+                            elif top_emotion["docEmotions"].has_key('disgust'):
+                                print sc.api_call('chat.postMessage', channel="#al_c", text='Gross!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
+
                             if (summary_countdown >= 0):
                                 summary_countdown -= 1
                             else:
@@ -42,19 +54,19 @@ class Slackbot:
         """
         Return TextEmotionAnalyzer docEmotions as dict for current text. Send res to user of id
         """
-        response = self.tea.get_emotions(textToAnalyze)
+        response = self.tea.get_top_emotion(textToAnalyze)
         try:
             result = {
                 "channel": channelId,
                 "user": userId,
                 "text": textToAnalyze,
-                "docEmotions": response["docEmotions"]
+                "docEmotions": ast.literal_eval(response)
             }
-
             print result
             self.history.addResponse(result['docEmotions'])
 
         except Exception as e:
+
             print "Could not get_emotions: " + e.message
 
 
