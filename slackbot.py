@@ -1,4 +1,9 @@
-# NWHACKS 2016 AL_C slackbot
+"""
+NWHACKS 2016 AL_C slackbot
+
+To activate locally, just call `python .\slackbot.py`
+"""
+
 import time
 from slackclient import SlackClient
 import requests
@@ -17,40 +22,31 @@ class Slackbot:
                 obj = sc.rtm_read()
                 if len(obj) != 0:
                     if obj[0].has_key('text'):
-                        print obj[0]['text']
-                        print obj[0]['user']
-                        self.analyse(obj[0]['text'], obj[0]['user'])
+                        # print "channel: " + obj[0]['channel']
+                        # print "text: " + obj[0]['text']
+                        # print "user: " + obj[0]['user']
+                        self.analyse(obj[0]['text'], obj[0]['user'], obj[0]['channel'])
                 time.sleep(1)
         else:
             print "Connection Failed, invalid token?"
 
-    def analyse(self, textToAnalyze, userId):
-
-        apikey = "d39ed152b9ca4e2b4eb9828c0379a44f33ef0f65"
-        params = {}
-
-        params['apikey'] = apikey
-        params['outputMode'] = 'json'
-
-        post_data = {}
-        post_data['text'] = textToAnalyze
-
-        ## Original; prints same as call to get_emotions
-        # post_url = "http://access.alchemyapi.com/calls/text/TextGetEmotion?outputMode=json&apikey=d39ed152b9ca4e2b4eb9828c0379a44f33ef0f65"
-        # results = self.s.post(url=post_url, data=post_data)
-        # print("Result" + results.text)
-
+    def analyse(self, textToAnalyze, userId, channelId):
+        """
+        Return TextEmotionAnalyzer docEmotions as dict for current text. Send res to user of id
+        """
         response = self.tea.get_emotions(textToAnalyze)
         try:
-            result = response["docEmotions"]
-
-            # !!! instead of just printing results, spit out / call to user.py or other handler/decisionmaker
+            result = {
+                "channel": channelId,
+                "user": userId,
+                "text": textToAnalyze,
+                "docEmotions": response["docEmotions"]
+            }
 
             print result
 
-        except:
-            print "Could not get_emotions"
-
+        except Exception as e:
+            print "Could not get_emotions: " + e.message
 
 
 if __name__ == "__main__":
