@@ -80,7 +80,7 @@ class TextEmotionAnalyzer:
 
         e.g. {"joy": "0.515193"}
         """
-        # res = json.loads(self.get_emotions(text="poopies!"))['docEmotions']
+        # res = json.loads(self.get_emotions(text="poopies!"))['docEmotions']http://nwhacks2016.devpost.com
         res = self.get_emotions(text)['docEmotions']
         abc = max(res.iteritems(), key=operator.itemgetter(1))
         return json.dumps({abc[0]: abc[1]})
