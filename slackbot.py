@@ -13,7 +13,9 @@ import ast
 
 class Slackbot:
 
-    def __init__(self, token):
+    def __init__(self, token, channelName):
+        print token
+        print channelName
         history_length = 20
         summary_frequency = 5
         summary_countdown = summary_frequency
@@ -22,7 +24,7 @@ class Slackbot:
         self.token = token
         sc = SlackClient(token)
         self.history = bot_history(history_length)
-        channel = "#dancewithdeanna"
+        channel = channelName
         if sc.rtm_connect():
             while True:
                 new_evts = sc.rtm_read()
@@ -81,7 +83,7 @@ class Slackbot:
 
 
 if __name__ == "__main__":
-    bot = Slackbot("xoxp-21356914545-22690026608-23455833233-8b493b4eae")
+    bot = Slackbot("xoxp-23412134003-23441484467-23463972838-c4b442df73", "#newchannel")
     #bot = Slackbot("xoxp-23412134003-23409266740-23415010816-f684006023")
     #bot = Slackbot(token="xoxp-23412134003-23409266740-23444912631-4b1d6ed922")
 
