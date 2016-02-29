@@ -39,15 +39,15 @@ class Slackbot:
                             print top_emotion["docEmotions"]
 
                             if top_emotion["docEmotions"].has_key('anger'):
-                                print sc.api_call('chat.postMessage', channel=evt['channel'], text='Calm down!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
+                                print sc.api_call('chat.postMessage', channel=channel, text='Calm down!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
                             elif top_emotion["docEmotions"].has_key('fear'):
-                                print sc.api_call('chat.postMessage', channel=evt['channel'], text='Dont worry!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
+                                print sc.api_call('chat.postMessage', channel=channel, text='Dont worry!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
                             elif top_emotion["docEmotions"].has_key('joy'):
-                                print sc.api_call('chat.postMessage', channel=evt['channel'], text='Yay!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
+                                print sc.api_call('chat.postMessage', channel=channel, text='Yay!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
                             elif top_emotion["docEmotions"].has_key('sadness'):
-                                print sc.api_call('chat.postMessage', channel=evt['channel'], text='*hugs*!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
+                                print sc.api_call('chat.postMessage', channel=channel, text='*hugs*!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
                             elif top_emotion["docEmotions"].has_key('disgust'):
-                                print sc.api_call('chat.postMessage', channel=evt['channel'], text='Gross!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
+                                print sc.api_call('chat.postMessage', channel=channel, text='Gross!', username='DeannaTroi', icon_emoji=':woman::skin-tone-2:', as_user='false')
 
                             if (summary_countdown >= 0):
                                 summary_countdown -= 1
